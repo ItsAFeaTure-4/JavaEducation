@@ -64,18 +64,8 @@ public class Main {
 
                 while (true) {
                     board[personY - 1][personX - 1] = person;
-                    for (String[] raw : board) {
-                        System.out.println(wall);
-                        for (String col : raw) {
-                            System.out.print(leftBlock + col + " ");
-                        }
-                        System.out.println(rightBlock);
-                    }
-                    System.out.println(wall);
-
-
-                    System.out.println("Количество жизней:\t" + personLive + "\n");
-
+                    outputBoard(board, personLive);
+                    
                     System.out.println("Введите куда будет ходить персонаж(ход возможен только по вертикали и горизонтали на одну клетку;" +
                             "\nКоординаты персонажа - (x: " + personX + ", y: " + personY + "))");
                     int x = sc.nextInt();
@@ -98,6 +88,14 @@ public class Main {
                             break;
                         } else {
                             System.out.println("Решите задачу.");
+                             if (taskMonster(difficultGame)){
+                                board[personY - 1][personX - 1] = "  ";
+                                personX = x;
+                                personY = y;
+                            }
+                            else {
+                                personLive--;
+                            }
                         }
                     } else {
                         System.out.println("Координаты не изменены");
@@ -113,6 +111,42 @@ public class Main {
             case "НЕТ" -> System.out.println("Жаль, приходи еще!");
             default -> System.out.println("Данные введены неккоректно");
         }
+    }
+    static boolean taskMonster(int dificultGame) {
+        if (dificult == 1) {
+            Random r = new Random();
+            int x = r.nextInt(100);
+            int y = r.nextInt(100);
+            int trueAnswer = x + y;
+            System.out.println("Реши пример: " + x + " + " + y + " = ?");
+            Scanner sc = new Scanner(System.in);
+            int ans = sc.nextInt();
+            if (trueAnswer == ans) {
+                System.out.println("Верно! Ты победил монстра");
+                return true;
+            }
+            System.out.println("Ты проиграл эту битву!");
+            return false;
+        }
+    }
 
+    static void outputBoard(String[][] board, int live) {
+        String leftBlock = "| ";
+        String rightBlock = "|";
+        String wall = "+ —— + —— + —— + —— + —— +";
+
+        for (String[] raw : board) {
+            System.out.println(wall);
+            for (String col : raw) {
+                System.out.print(leftBlock + col + " ");
+            }
+            System.out.println(rightBlock);
+        }
+        System.out.println(wall);
+
+        System.out.println("Live:\\t" + live + "\\n");
     }
 }
+
+}
+
